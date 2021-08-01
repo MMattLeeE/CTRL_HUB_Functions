@@ -40,3 +40,10 @@ exports.makeUppercase = functions.firestore.document('/messages/{documentId}')
   // Setting an 'uppercase' field in Firestore document returns a Promise.
   return snap.ref.set({uppercase}, {merge: true});
 });
+
+exports.testFunction = functions.https.onCall((data, context) => {
+  //expecting the client to send {text: some text}
+  const text = data;
+  newText = 'data sent to server: ' + data;
+  return {text: newText}
+});
