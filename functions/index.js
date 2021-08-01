@@ -1,16 +1,10 @@
 // The Cloud Functions for Firebase SDK to create Cloud Functions and setup triggers.
 const functions = require('firebase-functions');
+const plaidFunctions = require('./plaidFunctions');
 
 // The Firebase Admin SDK to access Firestore.
 const admin = require('firebase-admin');
 admin.initializeApp();
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
 
 // Take the text parameter passed to this HTTP endpoint and insert it into 
 // Firestore under the path /messages/:documentId/original
@@ -48,3 +42,5 @@ exports.testFunction = functions.https.onCall((data, context) => {
   newText = 'data sent from server: ' + text;
   return {text: newText}
 });
+
+exports.getLinkToken = plaidFunctions.getLinkToken
