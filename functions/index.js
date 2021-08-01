@@ -38,9 +38,11 @@ exports.makeUppercase = functions.firestore.document('/messages/{documentId}')
 exports.testFunction = functions.https.onCall((data, context) => {
   //expecting the client to send a map/json {text: some text}
   const text = data.text;
-  functions.logger.log('what we got from client: '+ text)
+  functions.logger.log('what we got from client: '+ text);
   newText = 'data sent from server: ' + text;
-  return {text: newText}
+  return {text: newText};
 });
 
-exports.getLinkToken = plaidFunctions.getLinkToken
+exports.getLinkToken = plaidFunctions.getLinkToken;
+exports.exchangePublicToken = plaidFunctions.exchangePublicToken;
+exports.getTransactions = plaidFunctions.getTransactions;
