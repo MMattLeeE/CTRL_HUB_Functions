@@ -90,6 +90,7 @@ exports.getTransactions = functions.https.onCall(async (data, context) => {
         const response = await client.transactionsGet(request);
         transactions = response.data.transactions;
         const total_transactions = response.data.total_transactions;
+        
         // Manipulate the offset parameter to paginate
         // transactions and retrieve all available data
         while (transactions.length < total_transactions) {
