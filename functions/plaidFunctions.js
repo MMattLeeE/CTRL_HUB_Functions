@@ -33,17 +33,25 @@ data object:
 
 */
 exports.getLinkToken = functions.https.onCall(async (data, context) => {
+    //authentication validation check:
+    if (!context.auth) {
+        throw new functions.https.HttpsError(
+            "failed-precondition",
+            "The function must be called " + "while authenticated."
+        );
+    }
+
     const configs = {
         user: {
             // This should correspond to a unique id for the current user.
-            client_user_id: data.userId,
+            client_user_id: context.auth.uid,
         },
         client_name: 'CTRL Hub',
         products: ['auth', 'transactions'],
         country_codes: ['US'],
         language: 'en',
     };
-    functions.logger.log('userId recieved: ' + data.userId);
+    functions.logger.log('Using UID ' + context.auth.uid);
     try {
         const createTokenResponse = await client.linkTokenCreate(configs);
         functions.logger.log(createTokenResponse.data);
@@ -90,7 +98,7 @@ exports.getTransactions = functions.https.onCall(async (data, context) => {
         const response = await client.transactionsGet(request);
         transactions = response.data.transactions;
         const total_transactions = response.data.total_transactions;
-        
+
         // Manipulate the offset parameter to paginate
         // transactions and retrieve all available data
         while (transactions.length < total_transactions) {
