@@ -69,6 +69,15 @@ expecting data object of form:
 */
 exports.exchangePublicToken = functions.https.onCall(async (data, context) => {
     publicToken = data.publicToken;
+
+    //authentication validation check:
+    if (!context.auth) {
+        throw new functions.https.HttpsError(
+            "failed-precondition",
+            "The function must be called " + "while authenticated."
+        );
+    }
+
     try {
         const tokenResponse = await client.itemPublicTokenExchange({
             public_token: publicToken,
@@ -93,6 +102,16 @@ exports.getTransactions = functions.https.onCall(async (data, context) => {
         start_date: '2020-01-01',
         end_date: '2020-07-01'
     };
+
+    //authentication validation check:
+    if (!context.auth) {
+        throw new functions.https.HttpsError(
+            "failed-precondition",
+            "The function must be called " + "while authenticated."
+        );
+    }
+
+
     functions.logger.log(request['access_token']);
     try {
         const response = await client.transactionsGet(request);
